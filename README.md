@@ -19,15 +19,15 @@ Options
 Example
 =======
 
+Using `indentinator` with a file will tell you what amount of indentation the file uses.
+
 	$ indentinator lib/indentinator.rb 
 	lib/indentinator.rb uses 2 spaces.
 	
-Using `indentinator` with a file will tell you what amount of indentation the file uses.
+Using with the `-c` option will convert the file to the desired indentation amount, and print the result to STDOUT. In the future, there will be an option to overwrite the original file.
 
 	$ indentinator -c 4 lib/indentinator.rb
 	
-Using with the `-c` option will convert the file to the desired indentation amount, and print the result to STDOUT. In the future, there will be an option to overwrite the original file.
-
 Todo
 ====
 
