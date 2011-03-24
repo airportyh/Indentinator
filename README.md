@@ -4,6 +4,15 @@ Indentinator!
 Indentinator is a Ruby script that inspects and changes the indentation in
 your source files.
 
+Install
+=======
+
+You need ruby and rubygem installed, after which you can
+
+	gem install Indentinator
+	
+to install it.
+
 Usage 
 =====
   

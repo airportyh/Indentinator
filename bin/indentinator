@@ -25,13 +25,15 @@ end
 
 @files.each do |path|
   begin
+    if File.directory?(path)
+      puts "#{path} is a directory."
+      next
+    end
     File.open(path) do |file|
       lines = file.read.split("\n")
       amount = indent_amount(lines)
       if @to_amount.nil?
-        if amount.nil?
-          puts "Failed for #{path}. Is it binary?"
-        elsif amount == 0
+        if amount == 0
           puts "#{path} has no indentation."
         else
           puts "#{path} uses #{amount} spaces."
@@ -42,5 +44,7 @@ end
     end
   rescue Errno::ENOENT
     puts "Can't open #{path}"
+  rescue ArgumentError
+    puts "Failed for #{path}. Is it binary?"
   end
 end

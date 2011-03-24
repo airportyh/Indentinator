@@ -24,9 +24,6 @@ def indent_amount(lines)
   else
     0
   end
-rescue ArgumentError
-  # Probably a binary file
-  nil
 end
 
 def convert_indentation(text, from, to)
