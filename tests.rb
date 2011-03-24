@@ -1,5 +1,5 @@
 require 'rspec'
-require 'indentor.rb'
+require 'indentinator.rb'
 describe 'convert_file' do
   it "converts basic indentation" do
     text = "

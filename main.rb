@@ -1,6 +1,6 @@
 #! /usr/bin/env ruby
 require 'getopt/std'
-require 'indentor.rb'
+require 'indentinator.rb'
 opts = Getopt::Std.getopts('c:vV')
 @to_amount = opts['c']
 @very_verbose = opts['V']
