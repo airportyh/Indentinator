@@ -32,4 +32,4 @@ Todo
 ====
 
 - support tabs
-- preserve string literals
+- preserve multiline string literals in languages that support them
