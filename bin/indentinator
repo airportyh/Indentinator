@@ -1,0 +1,46 @@
+#! /usr/bin/env ruby
+require 'getopt/std'
+require 'indentinator'
+include Indentinator
+
+opts = Getopt::Std.getopts('c:vV')
+@to_amount = opts['c']
+@very_verbose = opts['V']
+@verbose = opts['v'] or @very_verbose
+@files = ARGV
+if @files.size == 0
+  puts "Usage: 
+  
+  indentinator [-c INDENT_AMOUNT] <file> [<file2>...]
+  
+Options:
+  
+  -c    Modify the indentation amount to INDENT_AMOUNT
+  -v    Verbose output
+  -V    Very verbose output
+  
+"
+  exit(0)
+end
+
+@files.each do |path|
+  begin
+    File.open(path) do |file|
+      lines = file.read.split("\n")
+      amount = indent_amount(lines)
+      if @to_amount.nil?
+        if amount.nil?
+          puts "Failed for #{path}. Is it binary?"
+        elsif amount == 0
+          puts "#{path} has no indentation."
+        else
+          puts "#{path} uses #{amount} spaces."
+        end
+      else
+        puts convert_lines(lines, amount, @to_amount).join("\n")
+      end
+    end
+  rescue Errno::ENOENT
+    puts "Can't open #{path}"
+  end
+end
