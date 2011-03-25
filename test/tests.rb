@@ -1,5 +1,6 @@
 require 'rspec'
-require 'indentinator.rb'
+require 'indentinator'
+include Indentinator
 describe 'convert_file' do
   it "converts basic indentation" do
     text = "
@@ -108,4 +109,40 @@ line 1
 
     line 4"
   end
+
+  it "should de-indent property(ex 3)" do
+    text = "
+line 2
+    line 3
+      line 4
+    line 5"
+    convert_indentation(text, 2, 4).should == "
+line 2
+    line 3
+        line 4
+    line 5"
+
+
+  end
+ 
+#  it "should de-indent property(ex 4)" do
+#    text = "
+#line 2
+#      line 3
+#          line 4
+#      line 5"
+#    convert_indentation(text, 2, 4).should == text
+#
+#  end  
+#  it "should de-indent property(ex 5)" do
+#    text = "
+#line 1
+#    line 2
+#          line 3
+#              line 4
+#          line 5
+#    line 6"
+#    convert_indentation(text, 2, 4).should == text
+#    
+#  end
 end

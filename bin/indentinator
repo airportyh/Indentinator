@@ -3,8 +3,9 @@ require 'getopt/std'
 require 'indentinator'
 include Indentinator
 
-opts = Getopt::Std.getopts('c:vV')
-@to_amount = opts['c']
+opts = Getopt::Std.getopts('c:a:vV')
+@amount = opts['a'].to_i
+@to_amount = opts['c'].to_i
 @very_verbose = opts['V']
 @verbose = opts['v'] or @very_verbose
 @files = ARGV
@@ -15,7 +16,14 @@ if @files.size == 0
   
 Options:
   
-  -c    Modify the indentation amount to INDENT_AMOUNT
+  -c INDENT_AMOUNT
+        Modify the indentation amount to INDENT_AMOUNT
+        
+  -a AMOUNT
+        Force the original amount of indentation to be interpreted as 
+        AMOUNT when converting the file's indentation. 
+        Normally, this value is inferred by looking at the file.
+        
   -v    Verbose output
   -V    Very verbose output
   
@@ -31,15 +39,17 @@ end
     end
     File.open(path) do |file|
       lines = file.read.split("\n")
-      amount = indent_amount(lines)
+      if @to_amount.nil? or @amount.nil?
+        @amount = indent_amount(lines)
+      end
       if @to_amount.nil?
-        if amount == 0
+        if @amount == 0
           puts "#{path} has no indentation."
         else
-          puts "#{path} uses #{amount} spaces."
+          puts "#{path} uses #{@amount} spaces."
         end
       else
-        puts convert_lines(lines, amount, @to_amount).join("\n")
+        puts convert_lines(lines, @amount, @to_amount).join("\n")
       end
     end
   rescue Errno::ENOENT
