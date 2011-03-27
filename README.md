@@ -1,8 +1,8 @@
 Indentinator!
 =============
 
-Indentinator is a Ruby script that inspects and changes the indentation in
-your source files. _Indent your code the way you want._
+Indentinator is a script that inspects and changes the indentation in
+your source files. It is language agnostic. _Indent your code the way you want._
 
 Install
 =======
