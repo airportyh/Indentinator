@@ -50,7 +50,7 @@ Using `indentinator` with a file argument will tell you what amount of indentati
 	$ indentinator lib/myapp.rb 
 	lib/myapp.rb uses 2 spaces.
 	
-Using with the `-c` option will convert the file to the desired indentation amount, and print the result to STDOUT.
+Using with the `-c` option will convert the file to the desired indentation amount, and print the result to `stdout`.
 
 	$ indentinator -c 4 lib/myapp.rb
 	
