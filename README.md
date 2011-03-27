@@ -71,7 +71,7 @@ process use the `-a` option
 
 	$ indentinator -a 4 -c lib/myapp.rb
 	
-Totally use it inside TextMate and stuff
+Totally Use it Inside TextMate and Stuff
 ========================================
 
 If you copied a snippet of code from the internets, and it uses a different
