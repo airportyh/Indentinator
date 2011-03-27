@@ -1,6 +1,6 @@
 Gem::Specification.new do |s| 
   s.name = "Indentinator"
-  s.version = "0.0.2"
+  s.version = "0.0.3"
   s.author = "Toby Ho"
   s.email = "airportyh@gmail.com"
   s.homepage = "http://tobyho.com"
@@ -12,4 +12,6 @@ Gem::Specification.new do |s|
   s.files = ['lib/indentinator.rb', 'bin/indentinator']
   s.require_path = "lib"
   s.test_files = ['test/tests.rb']
+  s.add_dependency('getopt')
+  s.add_development_dependency('rspec')
 end

@@ -40,5 +40,4 @@ Using with the `-c` option will convert the file to the desired indentation amou
 Todo
 ====
 
-- support tabs
 - preserve multiline string literals in languages that support them

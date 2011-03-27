@@ -1,15 +1,28 @@
 #! /usr/bin/env ruby
+$:.unshift(File.expand_path('../../lib', __FILE__)) if $0 == __FILE__
 require 'getopt/std'
 require 'indentinator'
 include Indentinator
 
-opts = Getopt::Std.getopts('c:a:vV')
-@amount = opts['a'].to_i
-@to_amount = opts['c'].to_i
+def parse_amount(val)
+  return nil if val.nil?
+  if val.to_i.to_s == val # is a number
+    ' ' * val.to_i
+  elsif val.downcase == 'tab'
+    "\t"
+  end
+end
+
+opts = Getopt::Std.getopts('ic:a:vVr')
+@from_stdin = opts['i']
+@amount = parse_amount(opts['a'])
+@to_amount = parse_amount(opts['c'])
 @very_verbose = opts['V']
-@verbose = opts['v'] or @very_verbose
+@verbose = opts['v'] || @very_verbose
+@replace = opts['r'] && not @from_stdin
 @files = ARGV
-if @files.size == 0
+
+if @files.size == 0 and not @from_stdin
   puts "Usage: 
   
   indentinator [-c INDENT_AMOUNT] <file> [<file2>...]
@@ -20,41 +33,76 @@ Options:
         Modify the indentation amount to INDENT_AMOUNT
         
   -a AMOUNT
-        Force the original amount of indentation to be interpreted as 
-        AMOUNT when converting the file's indentation. 
-        Normally, this value is inferred by looking at the file.
+        Tell me the original amount of indentation to use 
+        when converting the file's indentation. 
+        Normally, this value is inferred by looking at the input.
+        
+  -i    Read input from stdin. This will ignore any file arguments.
+        
+  -r    Replace the original file. Please back up your file or make sure you
+        are using version control. Indentinator is not responsible for
+        any damages; it just indents.
         
   -v    Verbose output
+  
   -V    Very verbose output
   
 "
   exit(0)
 end
 
-@files.each do |path|
-  begin
-    if File.directory?(path)
-      puts "#{path} is a directory."
-      next
+def process_input(text, path)
+  lines = text.split("\n")
+  if @to_amount.nil? or @amount.nil?
+    @amount = indent_amount(lines)
+  end
+  if @to_amount.nil?
+    if @amount == ''
+      puts "#{path} has no indentation."
+    elsif @amount.match(/^ *$/)
+      puts "#{path} uses #{@amount.size} spaces."
+    elsif @amount == "\t"
+      puts "#{path} uses tabs."
+    else
+      puts "#{path} uses #{@amount.gsub(' ', 'SPACE ').gsub("\t", 'TAB ').strip}. WTF?"
     end
-    File.open(path) do |file|
-      lines = file.read.split("\n")
-      if @to_amount.nil? or @amount.nil?
-        @amount = indent_amount(lines)
+  else
+    convert_lines(lines, @amount, @to_amount).join("\n")
+  end
+end
+
+def read_file(path)
+  f = open(path, 'r')
+  text = f.read
+  f.close
+end
+
+def write_file(path, text)
+  f = open(path, 'w')
+  f.write(text)
+  f.close
+end
+
+if @from_stdin
+  process_file(STDIN, 'Input')
+else
+  @files.each do |path|
+    begin
+      if File.directory?(path)
+        puts "#{path} is a directory."
+        next
       end
-      if @to_amount.nil?
-        if @amount == 0
-          puts "#{path} has no indentation."
-        else
-          puts "#{path} uses #{@amount} spaces."
-        end
+      text = read_file(path)
+      output = process_input(text, path)
+      if @replace
+        write_file(path, output)
       else
-        puts convert_lines(lines, @amount, @to_amount).join("\n")
+        puts output
       end
+    rescue Errno::ENOENT
+      puts "Can't open #{path}"
+    rescue ArgumentError
+      puts "Failed for #{path}. Is it binary?"
     end
-  rescue Errno::ENOENT
-    puts "Can't open #{path}"
-  rescue ArgumentError
-    puts "Failed for #{path}. Is it binary?"
   end
 end
