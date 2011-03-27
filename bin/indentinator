@@ -31,14 +31,14 @@ Options:
   
   -c INDENT_AMOUNT
         Modify the indentation amount to INDENT_AMOUNT. The value is either
-  	    a number - in which case it indicates the number of spaces to use; 
-  	    or TAB - which indicates to use tabs.
+        a number - in which case it indicates the number of spaces to use; 
+        or TAB - which indicates to use tabs.
     
   -a AMOUNT
-        Tell me the original AMOUNT of indentation to use 
+        Tell it the original AMOUNT of indentation to use 
         when converting the file's indentation. 
         Normally, this value is inferred by looking at the input.
-  	    This option takes the same values as -c.
+        This option takes the same values as -c.
     
   -i    Read input from stdin. This will ignore any file arguments.
     
