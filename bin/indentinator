@@ -19,7 +19,7 @@ opts = Getopt::Std.getopts('ic:a:vVr')
 @to_amount = parse_amount(opts['c'])
 @very_verbose = opts['V']
 @verbose = opts['v'] || @very_verbose
-@replace = opts['r'] && not @from_stdin
+@replace = opts['r'] && !@from_stdin
 @files = ARGV
 
 if @files.size == 0 and not @from_stdin
@@ -67,7 +67,12 @@ def process_input(text, path)
       puts "#{path} uses #{@amount.gsub(' ', 'SPACE ').gsub("\t", 'TAB ').strip}. WTF?"
     end
   else
-    convert_lines(lines, @amount, @to_amount).join("\n")
+    output = convert_lines(lines, @amount, @to_amount).join("\n")
+    if @replace
+      write_file(path, output)
+    else
+      puts output
+    end
   end
 end
 
@@ -75,6 +80,7 @@ def read_file(path)
   f = open(path, 'r')
   text = f.read
   f.close
+  text
 end
 
 def write_file(path, text)
@@ -93,12 +99,7 @@ else
         next
       end
       text = read_file(path)
-      output = process_input(text, path)
-      if @replace
-        write_file(path, output)
-      else
-        puts output
-      end
+      process_input(text, path)
     rescue Errno::ENOENT
       puts "Can't open #{path}"
     rescue ArgumentError
