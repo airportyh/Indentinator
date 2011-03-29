@@ -1,6 +1,6 @@
 Gem::Specification.new do |s| 
   s.name = "Indentinator"
-  s.version = "0.0.4"
+  s.version = "0.0.5"
   s.author = "Toby Ho"
   s.email = "airportyh@gmail.com"
   s.homepage = "http://tobyho.com"

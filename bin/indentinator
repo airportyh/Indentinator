@@ -93,7 +93,7 @@ def write_file(path, text)
 end
 
 if @from_stdin
-  process_file(STDIN, 'Input')
+  process_input(STDIN.read, 'Input')
 else
   @files.each do |path|
     begin
