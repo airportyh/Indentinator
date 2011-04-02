@@ -238,4 +238,17 @@ line 4"
       "    line 3"
     ]
   end
+  
+  it "tabs should be converted always(2)" do
+    lines = [
+      "line 1",
+      "  line 2",
+      "\t\tline 3"
+    ]
+    convert_lines(lines, ' ' * 2, ' ' * 4).should == [
+      "line 1",
+      "    line 2",
+      "        line 3"
+    ]
+  end
 end

@@ -58,7 +58,9 @@ def convert_lines(lines, from, to)
       end
     end
     indents.push(diff)
-    indents.map{|i| (i == from or i == "\t") ? to : i }.join + rest
+    indents
+      .map{|i| i ? i.gsub("\t", to) : i }
+      .map{|i| i == from ? to : i }.join + rest
   end
 end
 
